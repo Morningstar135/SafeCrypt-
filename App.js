@@ -1,22 +1,14 @@
-import { StatusBar } from "expo-status-bar";
 import { StyleSheet, Text, View } from "react-native";
 import Encrypt from "./Components/Encrypt";
 import Decrypt from "./Components/Decrypt";
-import { NavigationContainer } from "@react-navigation/native";
-import { createStackNavigator} from "@react-navigation/stack";
-import HomePage from "./Components/HomePage";
+
 
 export default function App() {
-  const Stack = createStackNavigator()
+ 
   return (
-    <NavigationContainer>
-      <Stack.Navigator>
-          <Stack.Screen name='Home' component={HomePage} />
-          <Stack.Screen name='Encrypt' component={Encrypt} />
-          <Stack.Screen name='Decrypt' component={Decrypt} />
-      </Stack.Navigator>
-      
-    </NavigationContainer>
+          <Encrypt />
+          //<Decrypt />
+     
   );
 }
 

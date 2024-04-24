@@ -1,12 +1,14 @@
 import { Alert, StyleSheet, Text, TextInput, View ,Clipboard} from 'react-native'
 import React, { useState } from 'react'
 import CustomButton from '../utils/CustomButton';
-import DocumentPicker from "expo-document-picker";
-import RNFS from 'expo-file-system' 
+import * as DocumentPicker from "expo-document-picker";
+import * as fs from 'expo-file-system';
+import CryptoJS from 'crypto-js';
 
 const Decrypt = () => {
   const [inputText, setInputText] = useState('');
   const [decryptedText, setDecryptedText] = useState('');
+  const [key,setKey] = useState("")
   const [selectedFile,setSelectedFile] =useState(null)
   const onChangeText=(text)=>{
       setInputText(text)
@@ -25,34 +27,52 @@ const Decrypt = () => {
       console.warn('Error Uploading File');
     } 
   }
-  const decrypt= async() => {
-     if (selectedFile&&inputText) {
-      Alert.alert('Empty Value',"Please Give one value to decrypt")
-    } else {
-      if (selectedFile) {
-        const fileData =await RNFS.readAsStringAsync(selectedFile.uri,{encoding:RNFS.EncodingType.Base64})
-        const encrypted =CryptoJS.AES.decrypt(fileData,130502).toString(CryptoJS.enc.Utf8)
-        const newFilePath = await RNFS.documentDirectory+`${selectedFile.name}-decrypted`
-        await RNFS.writeAsStringAsync(newFilePath,encrypted,{encoding:RNFS.EncodingType.Base64})
-        Alert.alert('Success','Decrypted File Saved in  your Gallery')  
-      } else {
-        if(inputText==''){
-          Alert.alert("Bruhhhh!!","I can't Decrypt a Empty Value")
+  const decrypt= async() => {   
+    if(selectedFile){
+      const fileContent = await fileSystem.readAsStringAsync(selectedFile.assets[0].uri)
+      let encodedF =""
+      for (let i = 0; i <fileContent.length; i++) {
+        encodedF += String.fromCharCode(fileContent.charCodeAt(i) ^ keyy.charCodeAt(i % keyy.length));
+      }
+        console.log('====================================');
+        console.log(inputText,key);
+        console.log('====================================');
+       
+        
+      console.log('====================================');
+      setDecryptedText(encodedF)
+      console.log('====================================');
+            Alert.alert("Encryption Successful","Successfully Encrypted Your File")
+            return
+    }else{
+        if(inputText!=""){
+          let encry =""
+          for (let i = 0; i < inputText.length; i++) {
+            encry += String.fromCharCode(inputText.charCodeAt(i) ^ key.charCodeAt(i % key.length));
+          }
+            console.log('====================================');
+            console.log(inputText,key);
+            console.log('====================================');
+           
+            setDecryptedText(encry)
+            console.log('====================================');
+            console.log(encry);
+            console.log('====================================');
+            Alert.alert("Encryption Successful","Successfully Encrypted Your Text")
+            
+
+        
+          console.log('====================================');
+          console.log(error);
+          console.log('====================================');
+        
         }
         else{
-          try {
-            var decrypted = CryptoJS.AES.decrypt(inputText,'12345').toString(CryptoJS.enc.Utf8)
-            setDecryptedText(decrypted);
-            setInputText('')
-        } catch (error) {
-          console.error(error);
+          Alert.alert("Enter a Value","Cannot Encrypt a Empty Value")
         }
-            
-        }
+    }
+    
       
-      }
-    } 
-
     
   };
   return (
@@ -69,6 +89,13 @@ const Decrypt = () => {
           style={{borderColor:'gray',borderWidth:.2,marginBottom:18,width:250,textAlign:'center'}}
         />
         <CustomButton btnColor={'black'} btnEftColor={'white'} width={180} title={' Select File to Decrypt'} titleColor={'white'} onPress={pickFile} />
+        <TextInput 
+          placeholder='Enter Key'
+          value={key}
+          multiline={true}
+          onChangeText={(text)=>setKey(text)}
+          style={{borderColor:'gray',borderWidth:.2,marginBottom:18,width:250,textAlign:'center'}}
+        />
         <CustomButton btnColor={'white'} btnEftColor={'black'} width={180} title={'Decrypt'} titleColor={'black'} onPress={decrypt} />
         <TextInput
           placeholder='Decrypted Message will be shown Here'
@@ -83,6 +110,7 @@ const Decrypt = () => {
     </View>
   )
 }
+
 
 export default Decrypt
 
