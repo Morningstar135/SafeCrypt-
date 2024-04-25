@@ -24,7 +24,7 @@ const Encrypt = () => {
           let encodedF =CryptoJS.AES.encrypt(fileContent)
           setEncrypted(encodedF)
           console.log('====================================');
-                Alert.alert("Encryption Successful","Successfully Encrypted Your File")
+                Alert.alert("Encryption Successful","Successfully Encrypted Your File Use Premium Version of this file to View the Encrypted File ")
                 return
         }else{
             if(inputText!=""){

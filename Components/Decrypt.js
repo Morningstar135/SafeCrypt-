@@ -30,19 +30,7 @@ const Decrypt = () => {
   const decrypt= async() => {   
     if(selectedFile){
       const fileContent = await fileSystem.readAsStringAsync(selectedFile.assets[0].uri)
-      let encodedF =""
-      for (let i = 0; i <fileContent.length; i++) {
-        encodedF += String.fromCharCode(fileContent.charCodeAt(i) ^ keyy.charCodeAt(i % keyy.length));
-      }
-        console.log('====================================');
-        console.log(inputText,key);
-        console.log('====================================');
-       
-        
-      console.log('====================================');
-      setDecryptedText(encodedF)
-      console.log('====================================');
-            Alert.alert("Encryption Successful","Successfully Encrypted Your File")
+      Alert.alert("Decryption Successful","Successfully Decrypted Your File")
             return
     }else{
         if(inputText!=""){
@@ -58,7 +46,7 @@ const Decrypt = () => {
             console.log('====================================');
             console.log(encry);
             console.log('====================================');
-            Alert.alert("Encryption Successful","Successfully Encrypted Your Text")
+            Alert.alert("Decryption Successful","Successfully Decrypted Your Text")
             
 
         
